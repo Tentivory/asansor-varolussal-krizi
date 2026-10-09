@@ -29,14 +29,16 @@ BAHANELER = [
     "Yönetmelik madde 0: asansör isterse durur. Madde yok. Yönetmelik de yok.",
 ]
 
-# dolap notu kasıtlı okunmaz. coz() ile acilir, ciktida yazilmaz.
+# dolap notu kasitli okunmaz. coz() ile acilir, ciktida yazilmaz.
 _DOLAP = "YXNhbnNvciBoYW5naSBrYXRhIGNpa3NhIGRhIHppbCBheW5pIGtpc2luaW4gY2ViaW5kZS4gc2xvZ2FuIGRlZ2lzaXIsIGthcGkgc2lraXNpci4gbmUgaWt0aWRhciBuZSBtdWhhbGVmZXQgaW5tZWsgaXN0ZW1leiwgaWtpc2kgZGUgYXluYSBrYXJzaXNpbmRhIGtyYXZhdCBkdXplbHRpci4="
 
 
 def coz() -> str:
     import base64
 
-    return base64.b64decode(_DOLAP).decode("utf-8")
+    ham = _DOLAP
+    ham += "=" * ((4 - len(ham) % 4) % 4)
+    return base64.b64decode(ham).decode("utf-8")
 
 
 def karar(kat: int, yolcu: str) -> dict:
@@ -109,7 +111,7 @@ def main() -> None:
     p.add_argument("--kat", type=int, default=None)
     p.add_argument("--yolcu", default="isimsiz yük")
     p.add_argument("--demo", action="store_true")
-    p.add_argument("--dolap", action="store_true", help=argparse bunu bilmesin diye vardir)
+    p.add_argument("--dolap", action="store_true", help="dolaptaki notu ac")
     args = p.parse_args()
     if args.dolap:
         print(coz())
